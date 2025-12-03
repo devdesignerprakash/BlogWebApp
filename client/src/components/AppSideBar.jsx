@@ -1,4 +1,4 @@
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarGroupLabel, SidebarMenuButton, SidebarMenuItem } from "./sidebar"
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarGroupLabel, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar"
 import { Circle } from "lucide-react"
 import { Home } from "lucide-react"
 import { Link } from 'react-router-dom'
