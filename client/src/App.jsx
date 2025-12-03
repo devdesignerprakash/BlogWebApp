@@ -1,14 +1,16 @@
 
 
+import { Routes,Route } from 'react-router-dom'
 import './App.css'
-import { Button } from './components/ui/button'
+import Layout from './components/ui/Layout'
 
 function App() {
-  
-
   return (
     <>
-     <Button>Hi Hello Button</Button>
+     <Routes>
+      <Route index element={<Layout/>}>
+      </Route>
+     </Routes>
     </>
   )
 }
