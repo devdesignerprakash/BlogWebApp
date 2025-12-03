@@ -6,12 +6,12 @@ import TopBar from '../TopBar';
 const Layout = () => {
   return (
     <div>
-       <TopBar/>
+       
         {/* sidebar */}
         <SidebarProvider>
+        <TopBar/>
         <AppSideBar/>
-        <main>
-            <SidebarTrigger/>
+        <main className='mt-16 p-2'>
             <Outlet/>   
         </main>
         </SidebarProvider>
