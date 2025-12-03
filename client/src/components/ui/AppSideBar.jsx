@@ -1,15 +1,16 @@
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarGroupLabel, SidebarMenuButton, SidebarMenuItem } from "./sidebar"
-import logo from '@/assets/firante-logo.png'
 import { Circle } from "lucide-react"
 import { Home } from "lucide-react"
 import { Link } from 'react-router-dom'
+import { AiOutlineComment } from "react-icons/ai";
+import { TbLogs } from "react-icons/tb";
 
 
 const AppSideBar = () => {
   return (
     <Sidebar>
       <SidebarHeader>
-        <img src={logo} alt="logo" width='200px' />
+        <h1 className='text-xl font-extrabold'><span className="text-blue-800">सााहित्यिक</span> <span className="text-red-600">सँघार</span></h1>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup >
@@ -19,19 +20,19 @@ const AppSideBar = () => {
                 <SidebarMenuButton>
                   <Home />
                   <Link to='/'>
-                    Home
+                    गृहपृष्ठ
                   </Link>
                 </SidebarMenuButton>
                 <SidebarMenuButton>
-                  Category
+                  <TbLogs />
                   <Link to='/'>
-                    Home
+                    रचनाहरू
                   </Link>
                 </SidebarMenuButton>
                 <SidebarMenuButton>
-                  <Home />
+                  <AiOutlineComment />
                   <Link to='/hello'>
-                    Home
+                    प्रतिकृयाहरू
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -41,13 +42,13 @@ const AppSideBar = () => {
         {/* Categories Menu */}
         <SidebarGroup>
           <SidebarGroupLabel>
-            Categories
+       कोटिहरू
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton>
-                  <Circle />Techs & Updates
+                  <Circle />कथा
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
