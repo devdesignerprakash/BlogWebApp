@@ -8,19 +8,17 @@ class AuthControllers{
             const existUser= await User.findOne({email})
 
             if(existUser){
-                return res.status(400).json({message:"User already exists"})
+                next(globalErrorHandler(409,"User already exists"))
             }
             const newUser= await AuthServices.registerUser(req.body)
             newUser.save();
             return res.status(201).json({message:"User registered successfully",newUser})
 
         } catch (error) {
+            next(globalErrorHandler(500,error.message))
             console.log("register controller error",error)
-
         }
     }
-
-    
 }
 
 export default new AuthControllers();
