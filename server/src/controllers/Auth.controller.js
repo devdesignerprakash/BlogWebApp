@@ -1,16 +1,21 @@
-import User from "../models/user.model";
+import User from "../models/user.model.js"
+import AuthServices from "../services/Auth.services.js";
 
 class AuthControllers{
-    static register=async(req,res)=>{
+  register=async(req,res)=>{
         try {
-            const {fullName,email,phoneNumber,address,password}=req.body;
+            const {email}=req.body;
             const existUser= await User.findOne({email})
 
             if(existUser){
                 return res.status(400).json({message:"User already exists"})
             }
+            const newUser= await AuthServices.registerUser(req.body)
+            newUser.save();
+            return res.status(201).json({message:"User registered successfully",newUser})
 
         } catch (error) {
+            console.log("register controller error",error)
 
         }
     }
