@@ -12,7 +12,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {SignUpSchema } from "@/schemas/AuthSchema";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { RouteLogin, RouteSignUp } from "@/RouteNames";
+import { RouteLogin} from "@/RouteNames";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const form = useForm({
@@ -26,8 +29,19 @@ const SignUp = () => {
       confirmPassword: "",
     },
   });
-  function onSubmit(values) {
-    console.log(values);
+  const navigate= useNavigate()
+  async function onSubmit(values) {
+    try {
+      const response= await axios.post('http://localhost:5000/api/auth/register',values)
+      if(response.status===201){
+        toast.success(response.data.message)
+      }
+      navigate(RouteLogin)
+
+    }catch(error){
+      toast.error(error.response.data.message)
+      console.log("signup form submit error",error)
+    };
   }
   return (
     <div className="flex justify-center items-center h-screen w-screen flex-col gap-4 ">
