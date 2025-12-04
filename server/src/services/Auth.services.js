@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import bcrypt from "bcryptjs"
 
 class AuthServices {
    static registerUser = async (data) => {
@@ -9,11 +10,12 @@ class AuthServices {
       console.log("register service error", error);
     }
   };
-  static loginUser=async(data)=>{
+  static comparePassword=async(password,user)=>{
     try {
-
+      const isMatch=await bcrypt.compare(password,user.password)
+      return isMatch
     } catch (error) {
-
+      console.log("compare password service error",error)
     }
   }
 }

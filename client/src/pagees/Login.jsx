@@ -12,7 +12,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "@/schemas/AuthSchema";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { RouteSignUp } from "@/RouteNames";
+import { RouteHome, RouteSignUp } from "@/RouteNames";
+import axios from "axios";
+import { toast } from "react-toastify";
+import {useNavigate} from 'react-router-dom'
+import { use } from "react";
 
 const Login = () => {
   const form = useForm({
@@ -22,12 +26,25 @@ const Login = () => {
       password: "",
     },
   });
+  const navigate=useNavigate()
+  const onSubmit = async(data) => {
+    try{
+      const response= await axios.post('http://localhost:5000/api/auth/login',data,{withCredentials:true})
+      if(response.status===200){
+        toast.success(response.data.message)
+        navigate(RouteHome)
+      }
+    }catch(error){
+      toast.error(error.response.data.message)
+      console.log('login error', error)
+    }
+  };
   return (
     <div className="flex justify-center items-center h-screen w-screen flex-col gap-4 ">
       <h1 className="text-2xl font-bold">Login Page</h1>
       <div className="w-96">
         <Form {...form}>
-          <form className="space-y-2 items-center justify-center flex flex-col shadow-md p-6 rounded-lg">
+          <form className="space-y-2 items-center justify-center flex flex-col shadow-md p-6 rounded-lg" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
               name="email"
