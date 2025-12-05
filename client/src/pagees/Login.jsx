@@ -15,8 +15,9 @@ import { Link } from "react-router-dom";
 import { RouteHome, RouteSignUp } from "@/RouteNames";
 import axios from "axios";
 import { toast } from "react-toastify";
-import {useNavigate} from 'react-router-dom'
-import { use } from "react";
+import { useNavigate } from 'react-router-dom'
+import { FcGoogle } from "react-icons/fc";
+
 
 const Login = () => {
   const form = useForm({
@@ -26,73 +27,101 @@ const Login = () => {
       password: "",
     },
   });
-  const navigate=useNavigate()
-  const onSubmit = async(data) => {
-    try{
-      const response= await axios.post('http://localhost:5000/api/auth/login',data,{withCredentials:true})
+  const navigate = useNavigate()
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/login', data, { withCredentials: true })
       console.log(response)
-      if(response.status===200){
+      if (response.status === 200) {
         toast.success(response.data.message)
         navigate(RouteHome)
       }
-    }catch(error){
+    } catch (error) {
       toast.error(error.response.data.message)
       console.log('login error', error)
     }
   };
   return (
-    <div className="flex justify-center items-center h-screen w-screen flex-col gap-4 ">
-      <h1 className="text-2xl font-bold">Login Page</h1>
-      <div className="w-96">
-        <Form {...form}>
-          <form className="space-y-2 items-center justify-center flex flex-col shadow-md p-6 rounded-lg" onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="enter your Email"
-                      {...field}
-                      type="email"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="enter your password"
-                      type="password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" className="w-full">
-              Login
-            </Button>
-            <div className="flex justify-center items-center gap-2">
-              <p>Don't have an account?</p>
-              <Link to={RouteSignUp} className="text-blue-500">
-                Sign Up
-              </Link>
-            </div>
-          </form>
-        </Form>
+     <div className="flex justify-center items-center h-screen w-screen bg-gray-50">
+    <div className="w-96 bg-white p-8 rounded-xl shadow-md space-y-6">
+      
+      <h1 className="text-2xl font-bold text-center">Login</h1>
+
+      {/* Google Login Button */}
+      <Button
+        variant="ghost"
+        className="w-full flex items-center justify-center gap-3 border rounded-full py-2 hover:bg-gray-100"
+      >
+        <FcGoogle size={28} />
+        <span className="text-base font-medium text-gray-600">
+          Login with Google
+        </span>
+      </Button>
+
+      {/* Divider */}
+      <div className="flex items-center justify-center gap-2">
+        <hr className="w-1/3 border-gray-300" />
+        <span className="text-gray-500 text-sm">OR</span>
+        <hr className="w-1/3 border-gray-300" />
+      </div>
+
+      {/* Email/Password Form */}
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4"
+        >
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter your email"
+                    type="email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter your password"
+                    type="password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button type="submit" className="w-full">
+            Login
+          </Button>
+        </form>
+      </Form>
+
+      {/* Footer */}
+      <div className="text-center text-sm">
+        <span className="text-gray-600">Don’t have an account?</span>{" "}
+        <Link to={RouteSignUp} className="text-blue-500 hover:underline">
+          Sign Up
+        </Link>
       </div>
     </div>
+  </div>
   );
 };
 

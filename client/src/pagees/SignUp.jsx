@@ -9,13 +9,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {SignUpSchema } from "@/schemas/AuthSchema";
+import { SignUpSchema } from "@/schemas/AuthSchema";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { RouteLogin} from "@/RouteNames";
+import { RouteLogin } from "@/RouteNames";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
 
 const SignUp = () => {
   const form = useForm({
@@ -29,36 +30,57 @@ const SignUp = () => {
       confirmPassword: "",
     },
   });
-  const navigate= useNavigate()
+  const navigate = useNavigate()
   async function onSubmit(values) {
     try {
-      const response= await axios.post('http://localhost:5000/api/auth/register',values,{withCredentials:true})
-      if(response.status===201){
+      const response = await axios.post('http://localhost:5000/api/auth/register', values, { withCredentials: true })
+      if (response.status === 201) {
         toast.success(response.data.message)
       }
       navigate(RouteLogin)
 
-    }catch(error){
+    } catch (error) {
       toast.error(error.response.data.message)
-      console.log("signup form submit error",error)
+      console.log("signup form submit error", error)
     };
   }
   return (
-    <div className="flex justify-center items-center h-screen w-screen flex-col gap-4 ">
-      <h1 className="text-2xl font-bold">Sign-Up Page</h1>
-      <div className="w-96">
+    <div className="flex justify-center items-center h-screen w-screen bg-gray-50">
+      <div className="w-96 bg-white p-8 rounded-xl shadow-md space-y-6">
+
+        <h1 className="text-2xl font-bold text-center">Create an Account</h1>
+
+        {/* Google Auth Button */}
+        <Button
+          variant="ghost"
+          className="w-full flex items-center justify-center gap-3 border rounded-full py-2 hover:bg-gray-100"
+        >
+          <FcGoogle size={28} />
+          <span className="text-base font-medium text-gray-600">
+            Sign up with Google
+          </span>
+        </Button>
+
+        {/* OR Divider */}
+        <div className="flex items-center justify-center gap-2">
+          <hr className="w-1/3 border-gray-300" />
+          <span className="text-gray-500 text-sm">OR</span>
+          <hr className="w-1/3 border-gray-300" />
+        </div>
+
+        {/* Form */}
         <Form {...form}>
-          <form className="space-y-1 items-center justify-center flex flex-col shadow-md p-6 rounded-lg" onSubmit={form.handleSubmit(onSubmit)}>
-            {/* full-name */}
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+
             <FormField
               control={form.control}
               name="fullName"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem>
                   <FormLabel>Full Name</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="enter your full name"
+                      placeholder="Enter your full name"
                       {...field}
                       type="text"
                     />
@@ -67,16 +89,16 @@ const SignUp = () => {
                 </FormItem>
               )}
             />
-            {/* email */}
+
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="enter your Email"
+                      placeholder="Enter your email"
                       {...field}
                       type="email"
                     />
@@ -85,16 +107,16 @@ const SignUp = () => {
                 </FormItem>
               )}
             />
-            {/* phoneNumber */}
+
             <FormField
               control={form.control}
               name="phoneNumber"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="enter your phone number"
+                      placeholder="Enter your phone number"
                       {...field}
                       type="text"
                     />
@@ -103,16 +125,16 @@ const SignUp = () => {
                 </FormItem>
               )}
             />
-            {/* address */}
+
             <FormField
               control={form.control}
               name="address"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem>
                   <FormLabel>Address</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="enter your address"
+                      placeholder="Enter your address"
                       {...field}
                       type="text"
                     />
@@ -121,16 +143,16 @@ const SignUp = () => {
                 </FormItem>
               )}
             />
-            {/* password */}
+
             <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="enter your password"
+                      placeholder="Enter your password"
                       type="password"
                       {...field}
                     />
@@ -139,16 +161,16 @@ const SignUp = () => {
                 </FormItem>
               )}
             />
-            {/* confirmPassword */}
+
             <FormField
               control={form.control}
               name="confirmPassword"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="enter your confirm password"
+                      placeholder="Confirm your password"
                       {...field}
                       type="password"
                     />
@@ -157,17 +179,20 @@ const SignUp = () => {
                 </FormItem>
               )}
             />
+
             <Button type="submit" className="w-full">
-              Login
+              Sign Up
             </Button>
-            <div className="flex justify-center items-center gap-2">
-              <p>Already have an account?</p>
-              <Link to={RouteLogin} className="text-blue-500">
-                Login
-              </Link>
-            </div>
           </form>
         </Form>
+
+        {/* Footer */}
+        <div className="text-center text-sm">
+          <span className="text-gray-600">Already have an account?</span>{" "}
+          <Link to={RouteLogin} className="text-blue-500 hover:underline">
+            Login
+          </Link>
+        </div>
       </div>
     </div>
   );
