@@ -33,7 +33,7 @@ const SignUp = () => {
   const navigate = useNavigate()
   async function onSubmit(values) {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', values, { withCredentials: true })
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, values, { withCredentials: true })
       if (response.status === 201) {
         toast.success(response.data.message)
       }

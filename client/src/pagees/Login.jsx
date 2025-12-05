@@ -32,7 +32,7 @@ const Login = () => {
   const navigate = useNavigate()
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', data, { withCredentials: true })
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, data, { withCredentials: true })
       console.log(response)
       if (response.status === 200) {
         toast.success(response.data.message)
