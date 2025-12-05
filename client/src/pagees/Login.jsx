@@ -17,6 +17,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom'
 import { FcGoogle } from "react-icons/fc";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "@/config/configFirebase";
 
 
 const Login = () => {
@@ -41,6 +43,11 @@ const Login = () => {
       console.log('login error', error)
     }
   };
+  //google login
+  const googleLogin=async()=>{
+    const googleResponse= await signInWithPopup(auth,provider)
+    console.log(googleResponse)
+  }
   return (
      <div className="flex justify-center items-center h-screen w-screen bg-gray-50">
     <div className="w-96 bg-white p-8 rounded-xl shadow-md space-y-6">
@@ -51,6 +58,7 @@ const Login = () => {
       <Button
         variant="ghost"
         className="w-full flex items-center justify-center gap-3 border rounded-full py-2 hover:bg-gray-100"
+        onClick={()=>googleLogin()}
       >
         <FcGoogle size={28} />
         <span className="text-base font-medium text-gray-600">
