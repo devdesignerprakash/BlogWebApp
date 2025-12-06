@@ -18,6 +18,17 @@ class AuthServices {
       console.log("compare password service error",error)
     }
   }
+  static googleLogin=async(data)=>{
+    try {
+      const randmPassword=Math.random().toString(36).slice(-8)
+      const hashedPassword=bcrypt.hashSync(randmPassword,10)  
+      data.password=hashedPassword    
+      const newUser=await User.create(data)
+      return newUser
+    } catch (error) {
+      console.log("google login service error",error)
+    }
+  }
 }
 
 export default AuthServices;

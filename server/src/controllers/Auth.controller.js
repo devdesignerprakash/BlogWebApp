@@ -48,6 +48,41 @@ class AuthControllers {
 
         }
     }
+    googleLogin=async(req,res,next)=>{
+        try{
+            const {email}= req.body;
+            const existUser=await User.findOne({email})
+            if(existUser){
+                const token=generateToken(existUser._id,existUser.role)
+                res.cookie("token",token,{
+                    httpOnly:true,
+                    secure:process.env.NODE_ENV==="production",
+                    sameSite:"strict",
+                    path:"/",
+                    maxAge:24*60*60*1000,
+                })
+                const {password:_,...safeUser}=existUser.toObject();
+                return res.status(200).json({message:"User logged in successfully",user:safeUser})
+            }else{
+                const newUser=await AuthServices.googleLogin(req.body)
+                const token=generateToken(newUser._id,newUser.role)
+                res.cookie("token",token,{
+                    httpOnly:true,
+                    secure:process.env.NODE_ENV==="production",
+                    sameSite:"strict",
+                    path:"/",
+                    maxAge:24*60*60*1000,
+                })
+                const {password:_,...safeUser}=newUser.toObject();
+                return res.status(200).json({message:"User logged in successfully",user:safeUser})
+            }
+        }
+        catch(error){
+            next(globalErrorHandler(500, error.message))
+            console.log("googleLogin controller error", error)      
+        }
+
+    }
 }
 
 export default new AuthControllers();

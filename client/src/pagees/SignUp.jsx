@@ -17,6 +17,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "@/config/configFirebase";
 
 const SignUp = () => {
   const form = useForm({
@@ -44,6 +46,16 @@ const SignUp = () => {
       console.log("signup form submit error", error)
     };
   }
+   const googleLogin=async()=>{
+      const googleResponse= await signInWithPopup(auth,provider)
+     
+      const {email,displayName,photoURL}=googleResponse.user
+      const response=await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/google-login`,{email,fullName:displayName,profileImage:photoURL},{withCredentials:true})
+      if(response.status===200){
+        toast.success(response.data.message)
+        navigate(RouteHome)
+      }
+    }
   return (
     <div className="flex justify-center items-center h-screen w-screen bg-gray-50">
       <div className="w-96 bg-white p-8 rounded-xl shadow-md space-y-6">
@@ -54,6 +66,7 @@ const SignUp = () => {
         <Button
           variant="ghost"
           className="w-full flex items-center justify-center gap-3 border rounded-full py-2 hover:bg-gray-100"
+          onClick={googleLogin}
         >
           <FcGoogle size={28} />
           <span className="text-base font-medium text-gray-600">

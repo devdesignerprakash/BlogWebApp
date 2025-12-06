@@ -46,7 +46,13 @@ const Login = () => {
   //google login
   const googleLogin=async()=>{
     const googleResponse= await signInWithPopup(auth,provider)
-    console.log(googleResponse)
+   
+    const {email,displayName,photoURL}=googleResponse.user
+    const response=await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/google-login`,{email,fullName:displayName,profileImage:photoURL},{withCredentials:true})
+    if(response.status===200){
+      toast.success(response.data.message)
+      navigate(RouteHome)
+    }
   }
   return (
      <div className="flex justify-center items-center h-screen w-screen bg-gray-50">
