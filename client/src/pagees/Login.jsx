@@ -19,6 +19,8 @@ import { useNavigate } from 'react-router-dom'
 import { FcGoogle } from "react-icons/fc";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "@/config/configFirebase";
+import { useDispatch } from "react-redux";
+import { login } from "@/redux/user/userSlice";
 
 
 const Login = () => {
@@ -29,6 +31,7 @@ const Login = () => {
       password: "",
     },
   });
+  const dispatch= useDispatch()
   const navigate = useNavigate()
   const onSubmit = async (data) => {
     try {
@@ -36,6 +39,7 @@ const Login = () => {
       console.log(response)
       if (response.status === 200) {
         toast.success(response.data.message)
+        dispatch(login(response.data.user))
         navigate(RouteHome)
       }
     } catch (error) {
